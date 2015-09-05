@@ -1,8 +1,27 @@
 angular.module('starter.controllers', [])
 
-.controller('MapCtrl', function($scope, $ionicLoading, $compile, $state) {
+.controller('MapCtrl', function($scope, $ionicLoading, $compile, $state, $http) {
       $scope.submitLocations = function () {
-          $state.go('app.flist');
+          var start = $scope.location.start;
+          var end = $scope.location.end;
+          var googleKey = "AIzaSyDOeBvCcjFxfGnvcrS4a4RZ7dgqi3kbGKc";
+          var source = "https://maps.googleapis.com/maps/api/geocode/json?address=" + start + "&key=" + googleKey;
+          var origin, destination;
+          $http.get(source).success(function (data1) {
+              if(data1 && data1.results) {
+                origin = data1.results[0].geometry.location;
+                var source = "https://maps.googleapis.com/maps/api/geocode/json?address=" + end + "&key=" + googleKey;
+                $http.get(source).success(function (data2) {
+                  if(data2 && data2.results) {
+                    destination = data2.results[0].geometry.location;
+                    $scope.listUber = $scope.getListUber(origin, destination);
+                  }
+                });
+              }
+          });
+      };
+      $scope.getListUber = function (origin, destination) {
+        //implement this  
       };
       $scope.location = {};
       function initialize() {
