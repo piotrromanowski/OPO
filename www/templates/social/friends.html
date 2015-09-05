@@ -1,0 +1,115 @@
+<!-- Title for the ion view -->
+<ion-view title="Friend List">
+  <!-- ======================
+  LEFT SIDE BUTTON
+  ====================== -->
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <!-- ======================
+  END LEFT SIDE BUTTON
+  ====================== -->
+
+  <!-- ======================
+  RIGHT SIDE BUTTON
+  ====================== -->
+  <ion-nav-buttons side="right">
+    <button class="button button-icon icon ion-search"></button>
+  </ion-nav-buttons>
+  <!-- ======================
+  RIGHT SIDE BUTTON
+  ====================== -->
+  
+  <!-- ======================
+  MAIN CONTENT SECTION
+  ====================== -->
+  <ion-content class="has-header gem-ion-content">
+    <!-- Standard Ionic Markup for search -->
+    <div class="item item-input-inset">
+      <label class="item-input-wrapper">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search">
+      </label>
+    </div>    
+    <!-- End Search box-->
+
+    <!-- standard small heading title -->
+    <div class="label-title">32 friends</div>
+    <!-- end title -->
+
+    <!-- ======================
+    GEMIONIC FRIEND LIST (VERTICAL LIST)
+    ====================== -->
+    <ul class="list gem-friend-list">
+          <!-- Single Friend Item -->
+          <li class="item">
+            <!-- thumb image (round) -->
+            <img src="img/gemionic/profile-image.jpg" alt="" class="gem-friend-list-profile-pic"> <!-- End Image - absolute left/top -->
+            
+            <!-- Friend Name, Status Icon and Status Update -->
+            <div class="gem-friend-list-text">
+              <b>Marilyn</b>
+              <span class="signature"><i class="icon ion-record gem-color-default"></i> Offline | "Status Update"</span>
+            </div>
+            <!-- end -->
+
+          </li>
+          <!-- Single Friend Item -->
+          <li class="item">
+            <!-- thumb image (round) -->
+            <img src="img/gemionic/profile-image-2.jpg" alt="" class="gem-friend-list-profile-pic"> <!-- End Image - absolute left/top -->
+            
+            <!-- Friend Name, Status Icon and Status Update -->
+            <div class="gem-friend-list-text">
+              <b>Carl</b>
+              <span class="signature"><i class="icon ion-record gem-color-success"></i> Online | "Status Update"</span>
+            </div>
+            <!-- end -->
+
+          </li>
+          <!-- Single Friend Item -->
+          <li class="item">
+            <!-- thumb image (round) -->
+            <img src="img/gemionic/profile-image-3.jpg" alt="" class="gem-friend-list-profile-pic"> <!-- End Image - absolute left/top -->
+            
+            <!-- Friend Name, Status Icon and Status Update -->
+            <div class="gem-friend-list-text">
+              <b>Alysson</b>
+              <span class="signature"><i class="icon ion-record gem-color-danger"></i> Busy | "Status Update"</span>
+            </div>
+            <!-- end -->
+
+          </li>
+          <!-- Single Friend Item -->
+          <li class="item">
+            <!-- thumb image (round) -->
+            <img src="img/gemionic/profile-image-4.jpg" alt="" class="gem-friend-list-profile-pic"> <!-- End Image - absolute left/top -->
+            
+            <!-- Friend Name, Status Icon and Status Update -->
+            <div class="gem-friend-list-text">
+              <b>Maxy</b>
+              <span class="signature"><i class="icon ion-record gem-color-success"></i> Online | "Status Update"</span>
+            </div>
+            <!-- end -->
+
+          </li>
+
+          <!-- Single Friend Item -->
+          <li class="item">
+            <!-- thumb image (round) -->
+            <img src="img/gemionic/profile-image-5.jpg" alt="" class="gem-friend-list-profile-pic"> <!-- End Image - absolute left/top -->
+            
+            <!-- Friend Name, Status Icon and Status Update -->
+            <div class="gem-friend-list-text">
+              <b>Maxy</b>
+              <span class="signature"><i class="icon ion-record gem-color-success"></i> Online | "Status Update"</span>
+            </div>
+            <!-- end -->
+
+          </li>
+      </ul>
+  </ion-content>
+  <!-- ======================
+  END MAIN CONTENT SECTION
+  ====================== -->
+</ion-view>
