@@ -3,7 +3,31 @@ angular.module('starter.controllers', [])
 .controller('MapCtrl', function($scope, $ionicLoading, $compile, $state) {
       $scope.submitLocations = function () {
           $state.go('app.flist');
+
       };
+      $scope.getUberResults = function (orig, dest) {
+            url = 'https://api.uber.com/v1/estimates/price'
+            parameters = {
+              start_latitude: 51.5033630,
+              start_longitude: -0.1276250,
+              end_latitude: 53.5033630,
+              end_longitude: -0.1276250
+            }
+
+            var config = {headers:  {
+                    'Authorization': 'Token yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB'
+                }
+            };
+
+            $http.get(url, config).then(function(resp) {
+                console.log('Success', resp);
+                // For JSON responses, resp.data contains the result
+              }, function(err) {
+                console.error('ERR', err);
+                // err.status will contain the status code
+              });
+
+      }
       $scope.location = {};
       function initialize() {
         var mapOptions = {
@@ -33,7 +57,7 @@ angular.module('starter.controllers', [])
             if (status == google.maps.GeocoderStatus.OK) {
               contentString = "<div>" + results[0].formatted_address + "</div>";
               $scope.location.start = results[0].formatted_address;
-              $scope.$apply(); 
+              $scope.$apply();
             } else {
               contentString = "<div>Your current location!</div>";
             }
