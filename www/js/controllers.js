@@ -34,11 +34,29 @@ angular.module('starter.controllers', [])
           }
 
           $http(req).then(function(resp) {
+
               console.log('Success', resp);
             }, function(err) {
               console.error('ERR', err);
             });
       };
+      /* Time for Uber driver to get to departure/origin */
+      function getUberTimeEstimate(origin) {
+          var url = 'https://api.uber.com/v1/estimates/time?server_token=yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB&start_latitude=' + origin.lat;
+          url += '&start_longitude=' + origin.long;
+
+          var req = {
+             'method': 'GET',
+             'url': url,
+             'dataType' : 'json'
+          }
+
+          $http(req).then(function(resp) {
+              console.log('Success', resp);
+            }, function(err) {
+              console.error('ERR', err);
+          });
+      }
       $scope.location = {};
       function initialize() {
         var mapOptions = {
