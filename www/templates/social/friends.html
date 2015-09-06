@@ -1,25 +1,16 @@
 <!-- Title for the ion view -->
 <ion-view title="Results">
-  <ion-nav-buttons side="right">
-    <button class="button button-icon icon ion-search"></button>
-  </ion-nav-buttons>
-  <!-- ======================
-  RIGHT SIDE BUTTON
-  ====================== -->
-  
-  <!-- ======================
-  MAIN CONTENT SECTION
-  ====================== -->
   <ion-content class="has-header gem-ion-content">
-    <!-- Standard Ionic Markup for search -->
-    <div class="item item-input-inset">
-      <label class="item-input-wrapper">
-        <i class="icon ion-search placeholder-icon"></i>
-        <input type="text" placeholder="Search">
-      </label>
-    </div>    
-    <!-- End Search box-->
-
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Sort by
+      </div>
+      <select>
+        <option selected>Price</option>
+        <option>Distance</option>
+        <option>Duration</option>
+      </select>
+    </label>
     <!-- standard small heading title -->
     <div class="label-title">{{datas.length}} results found from {{startLocation}} to {{endLocation}}</div>
     <!-- end title -->

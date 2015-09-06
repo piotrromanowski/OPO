@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('MapCtrl', function($rootScope, $scope, $ionicLoading, $compile, $state, $http) {
+.controller('MapCtrl', function($rootScope, $scope, $ionicLoading, $compile, $state, $http, $timeout, $ionicPopup) {
       $scope.submitLocations = function () {
           var start = $scope.location.start;
           var end = $scope.location.end;
@@ -15,9 +15,24 @@ angular.module('starter.controllers', [])
                 var source = "https://maps.googleapis.com/maps/api/geocode/json?address=" + end + "&key=" + googleKey;
                 $http.get(source).success(function (data2) {
                   if(data2 && data2.results) {
-                    destination = data2.results[0].geometry.location;
-                    $rootScope.listUber = $scope.getListUber(origin, destination);
-                    $state.go('app.flist');
+                    if(data2.results[0] === undefined) {
+                        var myPopup1 = $ionicPopup.show({
+                          title: 'Invalid locations',
+                          subTitle: 'Please re-enter the correct locations',
+                          scope: $scope,
+                          buttons: [
+                            { text: 'Return!',
+                            type: 'button-positive' }
+                          ]
+                        });
+                        myPopup1.then(function(res) {
+                          $state.go('app.start');
+                        });
+                    } else {
+                      destination = data2.results[0].geometry.location;
+                      $rootScope.listUber = $scope.getListUber(origin, destination);
+                      $state.go('app.flist');
+                    }
                   }
                 });
               }
@@ -170,7 +185,19 @@ angular.module('starter.controllers', [])
                       $rootScope.$apply();
                   });
                 } , function(err) {
-                  console.error('ERR2', err);
+                  // An elaborate, custom popup
+                  var myPopup = $ionicPopup.show({
+                    title: 'Invalid locations',
+                    subTitle: 'Please re-enter the correct locations',
+                    scope: $scope,
+                    buttons: [
+                      { text: 'Go back!',
+                      type: 'button-positive' }
+                    ]
+                  });
+                  myPopup.then(function(res) {
+                    $state.go('app.start');
+                  });
               });
       };
 
