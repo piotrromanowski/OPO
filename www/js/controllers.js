@@ -16,23 +16,6 @@ angular.module('starter.controllers', [])
                     destination = data2.results[0].geometry.location;
                     $rootScope.listUber = $scope.getListUber(origin, destination);
                     $state.go('app.flist');
-                    $rootScope.datas = [
-                      {
-                        name: 'Uber',
-                        price: '2000',
-                        duration: '15s'
-                      },
-                      {
-                        name: 'Septa',
-                        price: '200',
-                        duration: '40s'
-                      },
-                      {
-                        name: 'Uber',
-                        price: '300',
-                        duration: '1000s'
-                      }
-                    ];
                   }
                 });
               }
@@ -53,51 +36,45 @@ angular.module('starter.controllers', [])
              'dataType' : 'json'
           }
 
-          $http(req).then(function(resp) {
-              console.log('Success', resp);
-          }, function(err) {
-              console.error('ERR', err);
-          });
+          $http(req).then(function(uberPrice) {
+              $rootScope.uberPrice = uberPrice.data.prices;
+              url = 'https://api.uber.com/v1/estimates/time?server_token=yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB&start_latitude=' + origin.lat;
+              url += '&start_longitude=' + origin.lng;
+              req = {
+                 'method': 'GET',
+                 'url': url,
+                 'dataType' : 'json'
+              };
+
+              origin = new google.maps.LatLng(origin.lat, origin.lng);
+                  destination = new google.maps.LatLng(destination.lat, destination.lng);
+
+                  var service = new google.maps.DistanceMatrixService();
+                  service.getDistanceMatrix({
+                      origins: [origin],
+                      destinations: [destination],
+                      travelMode: google.maps.TravelMode.DRIVING
+                    }, function(response, status) {
+                      var rows = response.rows;
+                      var row = rows[0];
+                      var duration = row["elements"][0].duration;
+                      var second = duration.value;
+                      var data = [];
+                      for(var price in $rootScope.uberPrice) {
+                        data.push({
+                          image: "Uber.jpg",
+                          name: $rootScope.uberPrice[price].display_name,
+                          price: $rootScope.uberPrice[price].estimate,
+                          duration: $rootScope.uberPrice[price].duration + second
+                        });
+                      }
+                      $rootScope.datas = data;
+                      $rootScope.$apply();
+                  });
+                } , function(err) {
+                  console.error('ERR2', err);
+              });
       };
-      /* Time for Uber driver to get to departure/origin */
-      function getUberTimeEstimate(origin) {
-          var url = 'https://api.uber.com/v1/estimates/time?server_token=yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB&start_latitude=' + origin.lat;
-          url += '&start_longitude=' + origin.long;
-
-          var req = {
-             'method': 'GET',
-             'url': url,
-             'dataType' : 'json'
-          }
-
-          $http(req).then(function(resp) {
-              console.log('Success', resp);
-            }, function(err) {
-              console.error('ERR', err);
-          });
-      }
-      /* Retrieves the amount of time it takes to drive from one location to another in seconds */
-      function getGoogleTimeDuration(origin, destination) {
-          // var origin = {lat: 51.5033630, long: -0.1276250};
-          // var destination = {lat: 51.5054830, long: -0.1276250};
-          var origin = new google.maps.LatLng(origin.lat, origin.long);
-          var destination = new google.maps.LatLng(destination.lat, destination.long);
-
-          var service = new google.maps.DistanceMatrixService();
-          service.getDistanceMatrix({
-              origins: [origin],
-              destinations: [destination],
-              travelMode: google.maps.TravelMode.DRIVING
-            }, callback);
-
-          function callback(response, status) {
-              var rows = response.rows;
-              var row = rows[0];
-              var duration = row["elements"][0].duration;
-              var seconds = duration.value;
-              console.log(seconds);
-          }
-      }
       $scope.location = {};
       function initialize() {
         var mapOptions = {
