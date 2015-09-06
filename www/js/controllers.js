@@ -96,7 +96,7 @@ angular.module('starter.controllers', [])
             var rows = response.rows;
             var row = rows[0];
             var duration = row["elements"][0];
-            if (typeof duration.status === "string") {
+            if (typeof duration.status === "string" && duration.status === "ZERO_RESULTS") {
                 console.log("woops nothing for " + transitMode);
             } else {
                 console.log("Your route for " + transitMode + " is ");
@@ -120,6 +120,8 @@ angular.module('starter.controllers', [])
               getPublicTransport(google.maps.TransitMode.SUBWAY,
                 getPublicTransport(google.maps.TransitMode.TRAIN), "", callback)));
       }
+
+      getAllPublicTransport();
 
       $scope.location = {};
       function initialize() {
