@@ -3,17 +3,19 @@
 
     <ion-content class="has-header gem-ion-content">
         <div id="map" data-tap-disabled="true"></div>
+        <form name="testForm" novalidate ng-submit="submit()">
         <div class="list">
           <label class="item item-input">
-            <input id="start-location" ng-change="location.start" ng-model="location.start" type="text">
+            <input name="to" id="start-location" ng-required="true" ng-change="location.start" ng-model="location.start" type="text">
           </label>
           <label class="item item-input">
-            <input ng-model="location.end" type="text" placeholder="To">
+            <input name="from" ng-model="location.end" ng-required="true" type="text" placeholder="To">
           </label>
           <label class="item">
-            <button class="button button-block button-positive" ng-click="submitLocations()">Submit</button>
+            <button ng-disabled="testForm.$invalid" class="button button-block button-positive" ng-click="submitLocations()">Submit</button>
           </label>
-      </div>
+        </div>
+        </form>
     </ion-content>
 </ion-view>
 

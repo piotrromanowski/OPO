@@ -1,48 +1,29 @@
 <!-- Title for the ion view -->
 <ion-view title="Results">
-  <ion-nav-buttons side="right">
-    <button class="button button-icon icon ion-search"></button>
-  </ion-nav-buttons>
-  <!-- ======================
-  RIGHT SIDE BUTTON
-  ====================== -->
-  
-  <!-- ======================
-  MAIN CONTENT SECTION
-  ====================== -->
   <ion-content class="has-header gem-ion-content">
-    <!-- Standard Ionic Markup for search -->
-    <div class="item item-input-inset">
-      <label class="item-input-wrapper">
-        <i class="icon ion-search placeholder-icon"></i>
-        <input type="text" placeholder="Search">
-      </label>
-    </div>    
-    <!-- End Search box-->
-
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Sort by
+      </div>
+      <select>
+        <option selected>Price</option>
+        <option>Distance</option>
+        <option>Duration</option>
+      </select>
+    </label>
     <!-- standard small heading title -->
-    <div class="label-title">32 friends</div>
+    <div class="label-title">{{datas.length}} results found from {{startLocation}} to {{endLocation}}</div>
     <!-- end title -->
-    <ul class="list gem-friend-list" ng-repeat="data in datas">
-            <!-- Single Friend Item -->
-            <li class="item">
-              <div class="row">
-                  <!-- thumb image (round) -->
-                  <img src="img/{{data.image}}" alt="" class="col col-center gem-friend-list-profile-pic"> <!-- End Image - absolute left/top -->
-                  <div class="col col-center gem-friend-list-text">
-                    <b>Price:{{data.price}}</b>
-                  </div>
-                  <div class="col col-center gem-friend-list-text">
-                    <b>Duration: <i class="icon ion-android-time"></i> {{data.duration}}</b>
-                  </div>
-                  <div class="col col-center gem-friend-list-text">
-                    <a class="button icon-right ion-chevron-right button-clear button-dark"></a>
-                  </div>
-              </div>
-            </li>
-        </div>
-    </ul>
-    </div>   
+    <div class="item item-avatar item-button-right" ng-repeat="data in datas">
+      <!-- thumb image -->
+      <img src="img/{{data.image}}" class="gem-circle">
+      <!-- Name -->
+      <h2>{{data.name}}</h2>
+      <!-- some text -->
+      <p>Price: {{data.price}} | Duration: {{data.duration}} | Distance: {{data.distance}}</p>
+      <!-- icon and status -->
+      <div ng-show="isUber(data)" ng-click="getDetail(data)" class="button-list button button-small button-positive"><i class="icon ion-ios-arrow-forward"></i></div>
+    </div>  
   </ion-content>
   <!-- ======================
   END MAIN CONTENT SECTION

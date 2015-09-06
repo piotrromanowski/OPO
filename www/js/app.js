@@ -23,6 +23,51 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       templateUrl: "templates/social/menu.html"
     })
 
+    .state('app.uberblack', {
+      url: "/uberblack",
+      views: {
+        'menuContent' : {
+          templateUrl: "templates/social/uberblack.html"
+        }
+      }
+    })
+
+    .state('app.uberxl', {
+      url: "/uberxl",
+      views: {
+        'menuContent' : {
+          templateUrl: "templates/social/uberxl.html"
+        }
+      }
+    })
+
+    .state('app.ubersuv', {
+      url: "/ubersuv",
+      views: {
+        'menuContent' : {
+          templateUrl: "templates/social/ubersuv.html"
+        }
+      }
+    })
+
+    .state('app.uberfamily', {
+      url: "/uberfamily",
+      views: {
+        'menuContent' : {
+          templateUrl: "templates/social/uberfamily.html"
+        }
+      }
+    })
+
+    .state('app.uberx', {
+      url: "/uberx",
+      views: {
+        'menuContent' : {
+          templateUrl: "templates/social/uberx.html"
+        }
+      }
+    })
+
     .state('app.start', {
       url: "/start",
       views: {
