@@ -22,6 +22,9 @@ angular.module('starter.controllers', [])
       };
       $scope.getListUber = function (origin, destination) {
 
+          //var origin = {lat: 51.5033630, long: -0.1276250};
+          //var destination = {lat: 51.5033830, long: -0.1276250};
+
           var url = 'https://api.uber.com/v1/estimates/price?server_token=yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB&start_latitude=' + origin.lat;
           url += '&start_longitude=' + origin.long;
           url += '&end_latitude=' + destination.lat;
@@ -34,11 +37,10 @@ angular.module('starter.controllers', [])
           }
 
           $http(req).then(function(resp) {
-
               console.log('Success', resp);
-            }, function(err) {
+          }, function(err) {
               console.error('ERR', err);
-            });
+          });
       };
       /* Time for Uber driver to get to departure/origin */
       function getUberTimeEstimate(origin) {
@@ -56,6 +58,28 @@ angular.module('starter.controllers', [])
             }, function(err) {
               console.error('ERR', err);
           });
+      }
+      /* Retrieves the amount of time it takes to drive from one location to another in seconds */
+      function getGoogleTimeDuration(origin, destination) {
+          // var origin = {lat: 51.5033630, long: -0.1276250};
+          // var destination = {lat: 51.5054830, long: -0.1276250};
+          var origin = new google.maps.LatLng(origin.lat, origin.long);
+          var destination = new google.maps.LatLng(destination.lat, destination.long);
+
+          var service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix({
+              origins: [origin],
+              destinations: [destination],
+              travelMode: google.maps.TravelMode.DRIVING
+            }, callback);
+
+          function callback(response, status) {
+              var rows = response.rows;
+              var row = rows[0];
+              var duration = row["elements"][0].duration;
+              var seconds = duration.value;
+              console.log(seconds);
+          }
       }
       $scope.location = {};
       function initialize() {
