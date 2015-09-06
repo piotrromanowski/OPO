@@ -46,7 +46,7 @@ angular.module('starter.controllers', [])
                  'dataType' : 'json'
               };
 
-              origin = new google.maps.LatLng(origin.lat, origin.lng);
+                  origin = new google.maps.LatLng(origin.lat, origin.lng);
                   destination = new google.maps.LatLng(destination.lat, destination.lng);
 
                   var service = new google.maps.DistanceMatrixService();
@@ -75,6 +75,52 @@ angular.module('starter.controllers', [])
                   console.error('ERR2', err);
               });
       };
+
+      var totalRails = [];
+      function getPublicTransport(transitMode, getNextPublic, onFinalTransit) {
+          var origin = {lat: 51.5033630, long: -0.1276250};
+          var destination = {lat: 51.5033830, long: -0.1276250};
+
+          origin = new google.maps.LatLng(origin.lat, origin.lng);
+          destination = new google.maps.LatLng(destination.lat, destination.lng);
+
+          var service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix({
+              origins: [origin],
+              destinations: [destination],
+              travelMode: google.maps.TravelMode.TRANSIT
+              ,transitOptions: {modes: [transitMode]}
+            }, callback);
+
+          function callback(response, status) {
+            var rows = response.rows;
+            var row = rows[0];
+            var duration = row["elements"][0];
+            if (typeof duration.status === "string") {
+                console.log("woops nothing for " + transitMode);
+            } else {
+                console.log("Your route for " + transitMode + " is ");
+                console.log(duration);
+                // push the type and time
+                var second = duration.value;
+                totalRails.push({name: transitMode, time: second})
+            }
+            if (getNextPublic && (typeof getNextPublic !== "string")) {
+                getNextPublic();
+            } else if (onFinalTransit){
+                onFinalTransit(totalRails);
+            }
+          }
+      }
+
+      function getAllPublicTransport(callback) {
+          totalRails = [];
+          getPublicTransport(google.maps.TransitMode.BUS,
+            getPublicTransport(google.maps.TransitMode.RAIL,
+              getPublicTransport(google.maps.TransitMode.SUBWAY,
+                getPublicTransport(google.maps.TransitMode.TRAIN), "", callback)));
+      }
+
       $scope.location = {};
       function initialize() {
         var mapOptions = {
