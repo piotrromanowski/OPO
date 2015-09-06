@@ -37,7 +37,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .gem-ion-content {color: #
 
       /*Profile Section*/
       .gem-sidebar.dark .gem-profile-image { border-radius:50px; width:100%; border: 4px solid rgba(255, 255, 255, 0.2);}
-      .gem-profile-settings-icon {font-size: 200%; margin-top: 15px;}
+      .gem-profile-settings-icon {font-size: 100%; margin-top: 15px;}
       .gem-text-center {text-align: center;}
       .bold {font-weight: bold;}
       .gem-text-right {text-align: right;}
@@ -49,7 +49,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .gem-ion-content {color: #
         .gem-label.success, .gem-success {background: #27AE60;}
         .gem-label.primary, .gem-primary {background: #428bca;}
         .button {margin-right: 7px;}
-        .item .button {font-size: 13px; padding: 3px 17px;}
+        .item .button {font-size: 11px; padding: 3px 17px;}
         .button, .button.gem-default, .button.gem-outline, .button.gem-warning, .button.gem-primary, .button.gem-danger, .button.gem-success {color: #fff; padding: 3px 17px; /*border: none;*/ border-radius: 3px;}
         .button-rounded {border-radius: 35px; padding-left: 30px; padding-right: 30px;}
         .button.gem-outline {border: 1px solid rgba(0, 0, 0, 0.3); color: #333;}
@@ -75,7 +75,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .gem-ion-content {color: #
 .gem-splash-logo { text-align: center; margin: 20% 0 0 0;}
 
 /*Styles for ion-content*/
-	.gem-ion-content {font-size: 14px; /*overflow-y:scroll;*/ }
+	.gem-ion-content {font-size: 12px; /*overflow-y:scroll;*/ }
 	.gem-ion-content .fluid-image, .fluid-image, .fluid {width: 100%;}
   .gem-quote {background: #EAEAEA; padding: 25px 25px 25px 70px; position: relative;}
   .gem-quote .author {opacity: 0.6; display: block; font-weight: bold; padding: 3px 0 0 0; margin: 13px 0 0 0;
@@ -102,7 +102,7 @@ border-top: 1px solid rgba(0, 0, 0, 0.2);}
 	.gem-ion-content .news-item .news-thumb {width: 50px;position: absolute;left: 0;margin-left: 15px;}
 	.gem-ion-content .news-item .news-thumb .img { border-radius:500px; width: 100%;}
 	.gem-ion-content .news-item .news-content {margin:0 25px 0 65px;}
-	.gem-ion-content .news-more-action {position: absolute;right: 0;width: 30px;font-size: 200%;top: 10px;margin-right: 12px;}
+	.gem-ion-content .news-more-action {position: absolute;right: 0;width: 30px;font-size: 100%;top: 10px;margin-right: 12px;}
 	.gem-ion-content .news-comment-summary {float: right; clear: both; display: inline-block;}
 	.gem-ion-content .news-item-stats {border: 1px solid #eaeaea; border-radius: 3px; padding: 4px 7px;}
 
@@ -217,8 +217,8 @@ border-top: 1px solid rgba(0, 0, 0, 0.2);}
       width: 60px;
       }
     .list.gem-friend-list .item {padding: 8px;min-height: 80px;}
-    .list.gem-friend-list .item .gem-friend-list-text {margin-left: 70px;margin-top: 13px; color: #34495E;}
-    .list.gem-friend-list .item .gem-friend-list-text .signature {display: block;font-size: 12px;color: #aaa;}
+    .list.gem-friend-list .item .gem-friend-list-text {margin-top: 13px; color: #34495E; width:70%;}
+    .list.gem-friend-list .item .gem-friend-list-text .signature {display: block; font-size: 10px;color: #aaa;}
 
     /*Friend Grid Style*/
       .gem-friend-grid {border-top: 1px solid rgba(0, 0, 0, 0.1); padding: 10px 0; }
@@ -288,3 +288,6 @@ border-top: 1px solid rgba(0, 0, 0, 0.2);}
     * html .clearfix { height: 1%; }
     .clearfix { display: block; }
     /* close commented backslash hack */
+.button-list {
+  margin-top: 10px;
+}

@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
                           image: "Uber.jpg",
                           name: $rootScope.uberPrice[price].display_name,
                           price: $rootScope.uberPrice[price].estimate,
-                          duration: $rootScope.uberPrice[price].duration + second
+                          duration: Number(($rootScope.uberPrice[price].duration + second)/60 + ($rootScope.uberPrice[price].duration + second)%60).toFixed(2)
                         });
                       }
                       $rootScope.datas = data;
