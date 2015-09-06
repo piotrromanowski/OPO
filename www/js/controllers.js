@@ -1,33 +1,44 @@
 angular.module('starter.controllers', [])
 
-.controller('MapCtrl', function($scope, $ionicLoading, $compile, $state) {
+.controller('MapCtrl', function($scope, $ionicLoading, $compile, $state, $http) {
       $scope.submitLocations = function () {
-          $state.go('app.flist');
-
+          var start = $scope.location.start;
+          var end = $scope.location.end;
+          var googleKey = "AIzaSyDOeBvCcjFxfGnvcrS4a4RZ7dgqi3kbGKc";
+          var source = "https://maps.googleapis.com/maps/api/geocode/json?address=" + start + "&key=" + googleKey;
+          var origin, destination;
+          $http.get(source).success(function (data1) {
+              if(data1 && data1.results) {
+                origin = data1.results[0].geometry.location;
+                var source = "https://maps.googleapis.com/maps/api/geocode/json?address=" + end + "&key=" + googleKey;
+                $http.get(source).success(function (data2) {
+                  if(data2 && data2.results) {
+                    destination = data2.results[0].geometry.location;
+                    $scope.listUber = $scope.getListUber(origin, destination);
+                  }
+                });
+              }
+          });
       };
-      $scope.getUberResults = function (orig, dest) {
-            url = 'https://api.uber.com/v1/estimates/price'
-            parameters = {
-              start_latitude: 51.5033630,
-              start_longitude: -0.1276250,
-              end_latitude: 53.5033630,
-              end_longitude: -0.1276250
-            }
+      $scope.getListUber = function (origin, destination) {
 
-            var config = {headers:  {
-                    'Authorization': 'Token yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB'
-                }
-            };
+          var url = 'https://api.uber.com/v1/estimates/price?server_token=yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB&start_latitude=' + origin.lat;
+          url += '&start_longitude=' + origin.long;
+          url += '&end_latitude=' + destination.lat;
+          url += '&end_longitude=' + destination.long;
 
-            $http.get(url, config).then(function(resp) {
-                console.log('Success', resp);
-                // For JSON responses, resp.data contains the result
-              }, function(err) {
-                console.error('ERR', err);
-                // err.status will contain the status code
-              });
+          var req = {
+             'method': 'GET',
+             'url': url,
+             'dataType' : 'json'
+          }
 
-      }
+          $http(req).then(function(resp) {
+              console.log('Success', resp);
+            }, function(err) {
+              console.error('ERR', err);
+            });
+      };
       $scope.location = {};
       function initialize() {
         var mapOptions = {

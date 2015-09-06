@@ -45,7 +45,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         'menuContent' :{
           templateUrl: "templates/social/friends.html"
         }
-      }
+      },
+      controller: 'MapCtrl'
     })
     
   // if none of the above states are matched, use this as the fallback
