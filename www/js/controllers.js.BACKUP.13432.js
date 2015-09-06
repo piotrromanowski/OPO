@@ -39,9 +39,13 @@ angular.module('starter.controllers', [])
           });
       };
       $scope.getListUber = function (origin, destination) {
+<<<<<<< HEAD
+=======
+
           //var origin = {lat: 51.5033630, long: -0.1276250};
           //var destination = {lat: 51.5033830, long: -0.1276250};
 
+>>>>>>> 050738e63adfc2581e23ba8584561b93ce84d928
           var url = 'https://api.uber.com/v1/estimates/price?server_token=yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB&start_latitude=' + origin.lat;
           url += '&start_longitude=' + origin.lng;
           url += '&end_latitude=' + destination.lat;
