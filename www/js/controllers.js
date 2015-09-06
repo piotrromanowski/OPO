@@ -103,7 +103,7 @@ angular.module('starter.controllers', [])
                 console.log(duration);
                 // push the type and time
                 var second = duration.value;
-                totalRails.push({name: transitMode, time: second})
+                totalRails.push({name: transitMode, time: second, image: 'septa.jpg'})
             }
             if (getNextPublic && (typeof getNextPublic !== "string")) {
                 getNextPublic();
