@@ -88,16 +88,11 @@ angular.module('starter.controllers', [])
                       var duration = row["elements"][0].duration;
                       var second = duration.value;
                       for(var price in $rootScope.uberPrice) {
-                        var time = Number(($rootScope.uberPrice[price].duration + second)/60 + ($rootScope.uberPrice[price].duration + second)%60).toFixed(2);
                         var result = "";
+                        result += Number(($rootScope.uberPrice[price].duration + second)/60).toFixed(2) + " mins";
 
-                        if(time >= 60) {
-                          var hour = Math.floor(time/60);
-                          var minutes = Math.floor(time % 60);
-                          result += hour + " hours " + minutes + " mins";
-                        } else {
-                          result += time + " mins";
-                        }
+
+
                         data.push({
                           image: "Uber.jpg",
                           name: $rootScope.uberPrice[price].display_name,
