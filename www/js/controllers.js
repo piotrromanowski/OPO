@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('MapCtrl', function($scope, $ionicLoading, $compile, $state, $http) {
+.controller('MapCtrl', function($rootScope, $scope, $ionicLoading, $compile, $state, $http) {
       $scope.submitLocations = function () {
           var start = $scope.location.start;
           var end = $scope.location.end;
@@ -14,18 +14,35 @@ angular.module('starter.controllers', [])
                 $http.get(source).success(function (data2) {
                   if(data2 && data2.results) {
                     destination = data2.results[0].geometry.location;
-                    $scope.listUber = $scope.getListUber(origin, destination);
+                    $rootScope.listUber = $scope.getListUber(origin, destination);
+                    $state.go('app.flist');
+                    $rootScope.datas = [
+                      {
+                        name: 'Uber',
+                        price: '2000',
+                        duration: '15s'
+                      },
+                      {
+                        name: 'Septa',
+                        price: '200',
+                        duration: '40s'
+                      },
+                      {
+                        name: 'Uber',
+                        price: '300',
+                        duration: '1000s'
+                      }
+                    ];
                   }
                 });
               }
           });
       };
       $scope.getListUber = function (origin, destination) {
-
           var url = 'https://api.uber.com/v1/estimates/price?server_token=yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB&start_latitude=' + origin.lat;
-          url += '&start_longitude=' + origin.long;
+          url += '&start_longitude=' + origin.lng;
           url += '&end_latitude=' + destination.lat;
-          url += '&end_longitude=' + destination.long;
+          url += '&end_longitude=' + destination.lng;
 
           var req = {
              'method': 'GET',

@@ -1,0 +1,9 @@
+{
+  "firebase": "opo-app",
+  "public": "www",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
