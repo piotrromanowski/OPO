@@ -31,6 +31,7 @@ angular.module('starter.controllers', [])
                     } else {
                       destination = data2.results[0].geometry.location;
                       $rootScope.listUber = $scope.getListUber(origin, destination);
+                      getAllPublicTransport(origin, destination);
                       $state.go('app.flist');
                     }
                   }
@@ -87,97 +88,31 @@ angular.module('starter.controllers', [])
                       var row = rows[0];
                       var duration = row["elements"][0].duration;
                       var second = duration.value;
+
                       for(var price in $rootScope.uberPrice) {
                         var result = "";
-                        result += Number(($rootScope.uberPrice[price].duration + second)/60).toFixed(2) + " mins";
+                        result += Number(($rootScope.uberPrice[price].duration + second)/60).toFixed(2);
 
+                        if (result >= 60) {
+                            hours = Math.floor(result/60);//.toFixed(0);;
+                            minutes = Math.floor(result % 60);
+                            result = hours + (hours > 1 ? " hours " : " hour ") + (minutes > 0 ? minutes + (minutes > 1 ? " minutes" : " minute") : "");
+                        } else {
+                          result += (result > 1 ? " minutes" : " minute");
+                        }
 
-
-                        data.push({
+                        if (typeof $rootScope.datas === 'undefined' || !$rootScope.datas) {
+                            $rootScope.datas = [];
+                        }
+                        $rootScope.datas.push({
                           image: "Uber.jpg",
                           name: $rootScope.uberPrice[price].display_name,
                           price: $rootScope.uberPrice[price].estimate,
                           distance: $rootScope.uberPrice[price].distance + " miles",
                           duration: result
                         });
+                        $rootScope.$apply();
                       }
-
-                      //populate data for Septa by google API
-                      var originMap = new google.maps.LatLng(origin.lat, origin.lng);
-                      var destinationMap = new google.maps.LatLng(destination.lat, destination.lng);
-                      var service = new google.maps.DistanceMatrixService();
-                      service.getDistanceMatrix({
-                          origins: [originMap],
-                          destinations: [destinationMap],
-                          travelMode: google.maps.TravelMode.TRANSIT
-                          ,transitOptions: {modes: [google.maps.TransitMode.BUS]}
-                        }, function(response, status) {
-                          if(response.rows[0].elements.length > 0) {
-                            for(var i in response.rows[0].elements) {
-                              if(response.rows[0].elements[i].status !== 'ZERO_RESULTS') {
-                                  data.push({
-                                name: "Septa Bus " + Math.floor((Math.random() * 125) + 1),
-                                image: "septaBus.jpg",
-                                distance: response.rows[0].elements[i].distance.text,
-                                duration: response.rows[0].elements[i].duration.text,
-                                price: response.rows[0].elements[i].fare ? response.rows[0].elements[i].fare.text : "$2.25"
-                              });
-                              }
-                            }
-                            //populate data for Septa by google API
-                            originMap = new google.maps.LatLng(origin.lat, origin.lng);
-                            destinationMap = new google.maps.LatLng(destination.lat, destination.lng);
-                            service = new google.maps.DistanceMatrixService();
-                            service.getDistanceMatrix({
-                                origins: [originMap],
-                                destinations: [destinationMap],
-                                travelMode: google.maps.TravelMode.TRANSIT
-                                ,transitOptions: {modes: [google.maps.TransitMode.SUBWAY]}
-                              }, function(response, status) {
-                                if(response.rows[0].elements.length > 0) {
-                                  for(var i in response.rows[0].elements) {
-                                    data.push({
-                                      name: "Septa Subway",
-                                      image: "subway.jpg",
-                                      distance: response.rows[0].elements[i].distance.text,
-                                      duration: response.rows[0].elements[i].duration.text,
-                                      price: response.rows[0].elements[i].fare ? response.rows[0].elements[i].fare.text : "$2.25"
-                                    });
-                                  }
-                                  //populate data for Septa by google API
-                                  originMap = new google.maps.LatLng(origin.lat, origin.lng);
-                                  destinationMap = new google.maps.LatLng(destination.lat, destination.lng);
-                                  service = new google.maps.DistanceMatrixService();
-                                  service.getDistanceMatrix({
-                                      origins: [originMap],
-                                      destinations: [destinationMap],
-                                      travelMode: google.maps.TravelMode.TRANSIT
-                                      ,transitOptions: {modes: [google.maps.TransitMode.SUBWAY]}
-                                    }, function(response, status) {
-                                      if(response.rows[0].elements.length > 0) {
-                                        for(var i in response.rows[0].elements) {
-                                          data.push({
-                                            name: "Septa Trolley",
-                                            image: "trolley.jpg",
-                                            distance: response.rows[0].elements[i].distance.text,
-                                            duration: response.rows[0].elements[i].duration.text,
-                                            price: response.rows[0].elements[i].fare ? response.rows[0].elements[i].fare.text : "$2.25"
-                                          });
-                                        }
-                                        $rootScope.datas = data;
-                                        $rootScope.$apply();
-                                      }
-                                    });
-                                  $rootScope.datas = data;
-                                  $rootScope.$apply();
-                                }
-                              });
-                            $rootScope.datas = data;
-                            $rootScope.$apply();
-                          }
-                        });
-                      $rootScope.datas = data;
-                      $rootScope.$apply();
                   });
                 } , function(err) {
                   // An elaborate, custom popup
@@ -196,50 +131,58 @@ angular.module('starter.controllers', [])
               });
       };
 
-      // var totalRails = [];
-      // function getPublicTransport(transitMode, getNextPublic, onFinalTransit) {
-      //     var origin = {lat: 51.5033630, long: -0.1276250};
-      //     var destination = {lat: 51.5033830, long: -0.1276250};
+      var totalRails = [];
+      function getPublicTransport(transitMode, origin, destination) {
+          var originMap = new google.maps.LatLng(origin.lat, origin.lng);
+          var destinationMap = new google.maps.LatLng(destination.lat, destination.lng);
 
-      //     var originMap = new google.maps.LatLng(origin.lat, origin.lng);
-      //     var destinationMap = new google.maps.LatLng(destination.lat, destination.lng);
+          var service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix({
+              origins: [originMap],
+              destinations: [destinationMap],
+              travelMode: google.maps.TravelMode.TRANSIT
+              ,transitOptions: {modes: [transitMode]}
+            }, callback);
 
-      //     var service = new google.maps.DistanceMatrixService();
-      //     service.getDistanceMatrix({
-      //         origins: [originMap],
-      //         destinations: [destinationMap],
-      //         travelMode: google.maps.TravelMode.TRANSIT
-      //         ,transitOptions: {modes: [transitMode]}
-      //       }, callback);
+          function callback(response, status) {
+            var rows = response.rows;
+            var row = rows[0];
 
-      //     function callback(response, status) {
-      //       var rows = response.rows;
-      //       var row = rows[0];
-      //       var duration = row["elements"][0];
-      //       if (typeof duration.status === "string" && duration.status === "ZERO_RESULTS") {
-      //           console.log("woops nothing for " + transitMode);
-      //       } else {
-      //           console.log("Your route for " + transitMode + " is ");
-      //           console.log(duration);
-      //           // push the type and time
-      //           var second = duration.value;
-      //           totalRails.push({name: transitMode, time: second, image: 'septa.jpg'})
-      //       }
-      //       if (getNextPublic && (typeof getNextPublic !== "string")) {
-      //           getNextPublic();
-      //       } else if (onFinalTransit){
-      //           onFinalTransit(totalRails);
-      //       }
-      //     }
-      // }
+            // console.log(row);
 
-      // $scope.getAllPublicTransport = function() {
-      //     totalRails = [];
-      //     $scopegetPublicTransport(google.maps.TransitMode.BUS,
-      //       $scopegetPublicTransport(google.maps.TransitMode.RAIL,
-      //         $scopegetPublicTransport(google.maps.TransitMode.SUBWAY,
-      //           $scopegetPublicTransport(google.maps.TransitMode.TRAIN), "", callback)));
-      // }
+            var route = row.elements[0];
+
+            if (route && route.status === "ZERO_RESULTS") {
+                console.log("woops nothing for " + transitMode);
+            } else {
+                console.log("Your route for " + transitMode + " is ");
+                var duration = route.duration.text;
+                var fare = (typeof route.fare !== 'undefined' ? route.fare.text: "check website");
+                var distance = (Number((route.distance.value /1000).toFixed(1)) * 0.6);
+                distance = distance > 1 ? + distance + " miles" : distance + " mile"; 
+
+                if (typeof $rootScope.datas === 'undefined' || !$rootScope.datas) {
+                    $rootScope.datas = [];
+                }
+                $rootScope.datas.push({
+                  name: transitMode,
+                  image: transitMode + ".jpg",
+                  duration: duration,
+                  price: fare,
+                  distance: distance
+                });
+                $rootScope.$apply();
+            }
+          }
+      }
+
+      function getAllPublicTransport(origin, destination) {
+          totalRails = [];
+          getPublicTransport(google.maps.TransitMode.BUS, origin, destination);
+          // getPublicTransport(google.maps.TransitMode.RAIL, origin, destination);
+          getPublicTransport(google.maps.TransitMode.SUBWAY, origin, destination);
+          getPublicTransport(google.maps.TransitMode.TRAIN, origin, destination);
+      }
 
       $scope.location = {};
       function initialize() {
