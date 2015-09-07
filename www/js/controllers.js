@@ -131,7 +131,6 @@ angular.module('starter.controllers', [])
               });
       };
 
-      var totalRails = [];
       function getPublicTransport(transitMode, origin, destination) {
           var originMap = new google.maps.LatLng(origin.lat, origin.lng);
           var destinationMap = new google.maps.LatLng(destination.lat, destination.lng);
@@ -147,19 +146,15 @@ angular.module('starter.controllers', [])
           function callback(response, status) {
             var rows = response.rows;
             var row = rows[0];
-
-            // console.log(row);
-
             var route = row.elements[0];
 
             if (route && route.status === "ZERO_RESULTS") {
                 console.log("woops nothing for " + transitMode);
             } else {
-                console.log("Your route for " + transitMode + " is ");
                 var duration = route.duration.text;
                 var fare = (typeof route.fare !== 'undefined' ? route.fare.text: "check website");
                 var distance = (Number((route.distance.value /1000).toFixed(1)) * 0.6);
-                distance = distance > 1 ? + distance + " miles" : distance + " mile"; 
+                distance = distance > 1 ? + distance + " miles" : distance + " mile";
 
                 if (typeof $rootScope.datas === 'undefined' || !$rootScope.datas) {
                     $rootScope.datas = [];
@@ -177,7 +172,6 @@ angular.module('starter.controllers', [])
       }
 
       function getAllPublicTransport(origin, destination) {
-          totalRails = [];
           getPublicTransport(google.maps.TransitMode.BUS, origin, destination);
           // getPublicTransport(google.maps.TransitMode.RAIL, origin, destination);
           getPublicTransport(google.maps.TransitMode.SUBWAY, origin, destination);
