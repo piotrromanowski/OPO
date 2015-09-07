@@ -1,6 +1,22 @@
 angular.module('starter.controllers', [])
 
 .controller('MapCtrl', function($rootScope, $scope, $ionicLoading, $compile, $state, $http, $timeout, $ionicPopup) {
+
+      $rootScope.items = ["price", "duration", "distance"];
+      $rootScope.data = {};
+      $rootScope.data.index = 1;
+
+      $rootScope.resort = function($scope) {
+          var index = $rootScope.data.index;
+          if (index === 0) {
+              $rootScope.datas = $rootScope.datas.sort(function(a, b) { return a.priceVal - b.priceVal});
+          } else if (index === 1) {
+              $rootScope.datas = $rootScope.datas.sort(function(a, b) { return a.durationVal - b.durationVal});
+          } else {
+              $rootScope.datas = $rootScope.datas.sort(function(a, b) { return a.distanceVal - b.distanceVal});
+          }
+      }
+
       $scope.submitLocations = function () {
           var start = $scope.location.start;
           var end = $scope.location.end;
@@ -46,6 +62,7 @@ angular.module('starter.controllers', [])
         else if(data.name.toLowerCase().indexOf('ubersuv') > -1) $state.go('app.ubersuv');
         else if(data.name.toLowerCase().indexOf('uberfamily') > -1) $state.go('app.uberfamily');
       };
+
       $rootScope.isUber = function (data) {
         return data.name.toLowerCase().indexOf('uber') > -1;
       };
@@ -73,7 +90,6 @@ angular.module('starter.controllers', [])
 
                   var originUber = new google.maps.LatLng(origin.lat, origin.lng);
                   var destinationUber = new google.maps.LatLng(destination.lat, destination.lng);
-
                   var service = new google.maps.DistanceMatrixService();
                   var data = [];
                   service.getDistanceMatrix({
@@ -91,7 +107,7 @@ angular.module('starter.controllers', [])
                         result += Number(($rootScope.uberPrice[price].duration + second)/60).toFixed(2);
 
                         if (result >= 60) {
-                            hours = Math.floor(result/60);//.toFixed(0);;
+                            hours = Math.floor(result/60);
                             minutes = Math.floor(result % 60);
                             result = hours + (hours > 1 ? " hours " : " hour ") + (minutes > 0 ? minutes + (minutes > 1 ? " minutes" : " minute") : "");
                         } else {
@@ -101,12 +117,16 @@ angular.module('starter.controllers', [])
                         if (typeof $rootScope.datas === 'undefined' || !$rootScope.datas) {
                             $rootScope.datas = [];
                         }
+
                         $rootScope.datas.push({
                           image: "Uber.jpg",
                           name: $rootScope.uberPrice[price].display_name,
                           price: $rootScope.uberPrice[price].estimate,
+                          priceVal : $rootScope.uberPrice[price].low_estimate,
                           distance: $rootScope.uberPrice[price].distance + " miles",
-                          duration: result
+                          distanceVal: $rootScope.uberPrice[price].distance,
+                          duration: result,
+                          durationVal: $rootScope.uberPrice[price].duration + second
                         });
                         $rootScope.$apply();
                       }
@@ -149,9 +169,13 @@ angular.module('starter.controllers', [])
                 console.log("woops nothing for " + transitMode);
             } else {
                 var duration = route.duration.text;
+                var durationVal = route.duration.value;
                 var fare = (typeof route.fare !== 'undefined' ? route.fare.text: "check website");
+                var priceVal = (typeof route.fare !== 'undefined' ? route.fare.value: 0)
                 var distance = (Number((route.distance.value /1000).toFixed(1)) * 0.6);
+                var distanceVal = distance;
                 distance = distance > 1 ? + distance + " miles" : distance + " mile";
+
 
                 if (typeof $rootScope.datas === 'undefined' || !$rootScope.datas) {
                     $rootScope.datas = [];
@@ -160,8 +184,11 @@ angular.module('starter.controllers', [])
                   name: transitMode,
                   image: transitMode + ".jpg",
                   duration: duration,
+                  durationVal: durationVal,
                   price: fare,
-                  distance: distance
+                  priceVal : priceVal,
+                  distance: distance,
+                  distanceVal: distanceVal
                 });
                 $rootScope.$apply();
             }

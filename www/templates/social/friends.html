@@ -5,24 +5,21 @@
       <div class="input-label">
         Sort by
       </div>
-      <select>
-        <option selected>Price</option>
-        <option>Distance</option>
-        <option>Duration</option>
+      <select ng-model="data.index" ng-options="items.indexOf(item) as item for item in items" ng-change="resort()">
       </select>
     </label>
     <!-- standard small heading title -->
     <div class="label-title">{{datas.length}} results found from {{startLocation}} to {{endLocation}}</div>
     <!-- end title -->
     <div class="item item-avatar item-button-right" ng-repeat="data in datas">
-      <!-- thumb image -->
-      <img src="img/{{data.image}}" class="gem-circle">
-      <!-- Name -->
-      <h2>{{data.name}}</h2>
-      <!-- some text -->
-      <p>Price: {{data.price}} | Duration: {{data.duration}} </p> <p> Distance: {{data.distance}}</p>
-      <!-- icon and status -->
-      <div ng-show="isUber(data)" ng-click="getDetail(data)" class="button-list button button-small button-positive"><i class="icon ion-ios-arrow-forward"></i></div>
+        <!-- thumb image -->
+        <img src="img/{{data.image}}" class="gem-circle">
+        <!-- Name -->
+        <h2>{{data.name}}</h2>
+        <!-- some text -->
+        <p>Price: {{data.price}} | Duration: {{data.duration}} </p> <p> Distance: {{data.distance}}</p>
+        <!-- icon and status -->
+        <div ng-show="isUber(data)" ng-click="getDetail(data)" class="button-list button button-small button-positive"><i class="icon ion-ios-arrow-forward"></i></div>
     </div>
   </ion-content>
   <!-- ======================
