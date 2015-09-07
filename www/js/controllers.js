@@ -50,9 +50,6 @@ angular.module('starter.controllers', [])
         return data.name.toLowerCase().indexOf('uber') > -1;
       };
       $scope.getListUber = function (origin, destination) {
-          //var origin = {lat: 51.5033630, long: -0.1276250};
-          //var destination = {lat: 51.5033830, long: -0.1276250};
-
           var url = 'https://api.uber.com/v1/estimates/price?server_token=yaxyXHwMLN6-xh8EOuP3LMmQbDSYR2UP3aQCGeNB&start_latitude=' + origin.lat;
           url += '&start_longitude=' + origin.lng;
           url += '&end_latitude=' + destination.lat;
