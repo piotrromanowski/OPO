@@ -172,7 +172,7 @@ angular.module('starter.controllers', [])
                 var durationVal = route.duration.value;
                 var fare = (typeof route.fare !== 'undefined' ? route.fare.text: "check website");
                 var priceVal = (typeof route.fare !== 'undefined' ? route.fare.value: 0)
-                var distance = (Number((route.distance.value /1000).toFixed(1)) * 0.6);
+                var distance = (Number((route.distance.value /1000)) * 0.6).toFixed(1);
                 var distanceVal = distance;
                 distance = distance > 1 ? + distance + " miles" : distance + " mile";
 

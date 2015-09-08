@@ -208,7 +208,7 @@ border-top: 1px solid rgba(0, 0, 0, 0.2);}
 
     /*Email*/
     .add-repicient {font-size: 48px; display: block;}
-    
+
     /*Friend List (Horizontal)*/
     .gem-friend-list { position: relative;}
     .label-title {padding: 8px 11px;}
@@ -294,4 +294,11 @@ border-top: 1px solid rgba(0, 0, 0, 0.2);}
 
 .errors p {
   color: red;
+}
+
+
+/* Custom styles for listing of rides */
+
+.item p {
+    font-size: 12px;
 }
